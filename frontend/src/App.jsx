@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import { Route, Routes , Navigate} from "react-router";
+import toast, { Toaster } from "react-hot-toast";
 
-function App() {
-  const [count, setCount] = useState(0)
+import HomePage from "./Pages/HomePage";
+import SignUpPage from "./Pages/SignUpPage";
+import LoginPage from "./Pages/LoginPage";
+import Onboarding from "./Pages/Onboarding";
+import ChatPage from "./Pages/ChatPage";
+import CallPage from "./Pages/CallPage";
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios";
+import {axiosInstance} from "./lib/axios.js"
+
+const App = () => {
+
+  // tanstack query
+  const { data:authData, isLoading, error, } = useQuery({
+    queryKey: ["authUser"],
+
+    queryFn: async () => {
+
+      const res = await axiosInstance.get("/auth/me")
+
+      return res.data;
+    },
+    retry: false, // auth check is just once cause it is authentication
+  });
+
+
+  const authUser = authData?.user
+
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="h-screen justify-center item-center" data-theme="night">
+      {/* axios */}
+      {/*  react query tanstack query*/}
 
-export default App
+      <Routes>
+        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />}></Route>
+
+        <Route path="/signup" element={!authUser ?  <SignUpPage /> : <Navigate to="/"/>}></Route>
+
+        <Route path="/login" element={!authUser ?  <LoginPage /> : <Navigate to=""/>}></Route>
+
+        <Route path="/notifications" element={authUser ? <CallPage /> : <Navigate to="/login" />}></Route>
+
+        <Route path="/call" element={authUser ?<Onboarding /> : <Navigate to="/login" />}></Route>
+
+        <Route path="/chat" element={authUser ?<ChatPage/> : <Navigate to="/login" />}></Route>
+
+        <Route path="/onboarding" element={authUser ?<Onboarding /> : <Navigate to="/login" />}></Route>
+      </Routes>
+      <Toaster />
+    </div>
+  );
+};
+
+export default App;
