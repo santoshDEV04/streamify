@@ -39,9 +39,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />}></Route>
 
-        <Route path="/signup" element={!authUser ?  <SignUpPage /> : <Navigate to="/"/>}></Route>
+        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />}></Route>
+{/*
+        <Route path="/signup" element={<SignUpPage/>}></Route> */}
 
-        <Route path="/login" element={!authUser ?  <LoginPage /> : <Navigate to=""/>}></Route>
+        <Route path="/login" element={!authUser ?  <LoginPage /> : <Navigate to="/"/>}></Route>
 
         <Route path="/notifications" element={authUser ? <CallPage /> : <Navigate to="/login" />}></Route>
 
@@ -52,6 +54,7 @@ const App = () => {
         <Route path="/onboarding" element={authUser ?<Onboarding /> : <Navigate to="/login" />}></Route>
       </Routes>
       <Toaster />
+      { console.log("authUser: ", authUser)}
     </div>
   );
 };
