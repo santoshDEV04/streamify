@@ -29,7 +29,7 @@ const Sidebar = () => {
           <span>Home</span>
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="/friends"
           className={({ isActive }) =>
             `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
@@ -39,7 +39,7 @@ const Sidebar = () => {
         >
           <UsersIcon className="size-5 text-base-content opacity-70" />
           <span>Friends</span>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           to="/notifications"
