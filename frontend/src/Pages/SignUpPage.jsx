@@ -21,12 +21,12 @@ const SignUpPage = () => {
 
   // })
 
-  const { isPending, error , signupMutation} = useSignUp()
+  const { isPending, error , mutate} = useSignUp()
 
 
   const handleSignup = (e) => {
     e.preventDefault();
-    signupMutation(signupData)
+    mutate(signupData)
   };
 
   return (
